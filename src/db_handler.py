@@ -1,11 +1,12 @@
 import sqlite3
+from encryption_handler import encrypt_password, decrypt_password
 
-# create database connection
+# Create database connection
 def connect():
     connection = sqlite3.connect('password_manager.key')
     return connection
 
-# create table (if not exists)
+# Create table (if not exists)
 def create_table():
     connection = connect()
     cursor = connection.cursor()
@@ -20,26 +21,33 @@ def create_table():
     connection.commit()
     connection.close()
 
-# add new entry to the database
+# Add new entry to the database
 def add_entry(website, username, password):
+    encrypted_password = encrypt_password(password)
     connection = connect()
     cursor = connection.cursor()
     cursor.execute('''
         INSERT INTO entries (website, username, password) VALUES (?, ?, ?)
-    ''', (website, username, password))
+    ''', (website, username, encrypted_password))
     connection.commit()
     connection.close()
 
-# get all entries from the database
+# Get all entries from the database
 def get_entries():
     connection = connect()
     cursor = connection.cursor()
     cursor.execute('SELECT * FROM entries')
     entries = cursor.fetchall()
     connection.close()
-    return entries
+    
+    # decrypt password before returning
+    decrypted_entries = []
+    for entry in entries:
+        decrypted_password = decrypt_password(entry[3])
+        decrypted_entries.append((entry[0], entry[1], entry[2], decrypted_password))
+    return decrypted_entries
 
-# delete entry from the database using the entry ID
+# Delete entry from the database using the entry ID
 def delete_entry(entry_id):
     connection = connect()
     cursor = connection.cursor()
@@ -47,7 +55,7 @@ def delete_entry(entry_id):
     connection.commit()
     connection.close()
 
-# delete all entries from the database
+# Delete all entries from the database
 def delete_all_entries():
     connection = connect()
     cursor = connection.cursor()

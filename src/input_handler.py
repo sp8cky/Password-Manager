@@ -9,6 +9,7 @@ def get_user_choice():
     print("5. Exit")
 
     choice = input("Enter your choice (1-5): ")
+    print("\n---------------------------------------------")
     return choice
 
 def get_input():

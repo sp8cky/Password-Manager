@@ -45,6 +45,9 @@ def get_entries():
     for entry in entries:
         decrypted_password = decrypt_password(entry[3])
         decrypted_entries.append((entry[0], entry[1], entry[2], decrypted_password))
+
+        print(f"Website: {entry[1]}, Username: {entry[2]}, Password: {decrypted_password}") # test print
+
     return decrypted_entries
 
 # Delete entry from the database using the entry ID

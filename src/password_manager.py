@@ -1,7 +1,7 @@
 import os
 
 from input_handler import get_user_choice, get_input
-from encryption_handler import generate_key
+from encryption_handler import generate_key, generate_password
 from db_handler import create_table, add_entry, get_entries, delete_entry, delete_all_entries
 
 def main():
@@ -42,8 +42,15 @@ def main():
         elif choice == '4': # delete all entries
             delete_all_entries()
             print("All entries deleted successfully!")
+        
+        elif choice == '5': # generate password
+            password_length = int(input("Enter the desired password length (minimum 8): "))
+            if password_length < 8:
+                print("Invalid choice.")
+            password = generate_password(password_length)  
+            print(f"Generated password: {password}")
 
-        elif choice == '5':
+        elif choice == '6': # exit
             print("Exiting the program.")
             break
 

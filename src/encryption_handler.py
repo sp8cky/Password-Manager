@@ -1,3 +1,4 @@
+import secrets, string, random
 from cryptography.fernet import Fernet
 
 #  Generate key
@@ -23,3 +24,8 @@ def decrypt_password(encrypted_password):
     f = Fernet(key)
     decrypted_password = f.decrypt(encrypted_password).decode()
     return decrypted_password
+
+def generate_password(password_length):
+    characters = string.ascii_letters + string.digits + string.punctuation
+    password = ''.join(random.choice(characters) for _ in range(password_length))
+    return password

@@ -3,15 +3,16 @@ Simple python implementation of a password manager.
 
 ## Implemented functions
 - Create a .key-database
-- Add entries (webiste, username, password)
+- Add entries (website, username, (pseudogenerated) password)
 - Delete an entry
 - Delete all entries
 - View all entries
+- Generate a pseudogenerated password 
 
 ## Project status
 - Still in progress
 
-### Future implementations
+## Future implementations
 - ...
 
 ## Important Notes:

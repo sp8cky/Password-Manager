@@ -1,5 +1,5 @@
 # Password-Manager
-Simple python implementation of a password manager.
+Python implementation of a console based password manager. 
 
 ## Implemented functions
 - Create a .key-database

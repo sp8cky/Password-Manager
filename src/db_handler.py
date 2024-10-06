@@ -2,16 +2,14 @@ import sqlite3
 import os
 
 # create database connection
-def connect():
-    connection = sqlite3.connect('password_manager.key')
+def connect(db_name):
+    connection = sqlite3.connect(db_name)
     return connection
 
-
 # create table (if not exists)
-def create_table():
-    connection = connect()
+def create_table(connection):
     cursor = connection.cursor()
-    cursor.execute('''
+    cursor.execute(''' 
         CREATE TABLE IF NOT EXISTS entries (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             website TEXT NOT NULL,
@@ -20,47 +18,54 @@ def create_table():
         )
     ''')
     connection.commit()
-    connection.close()
-
 
 # add new entry to the database
-def add_entry(website, username, password):
-    connection = connect()
+def add_entry(connection, website, username, password):
     cursor = connection.cursor()
-    cursor.execute('''
+    cursor.execute(''' 
         INSERT INTO entries (website, username, password) VALUES (?, ?, ?)
     ''', (website, username, password))
     connection.commit()
-    connection.close()
-
 
 # get all entries from the database
-def get_entries():
-    connection = connect()
+def get_entries(connection):
     cursor = connection.cursor()
     cursor.execute('SELECT * FROM entries')
     entries = cursor.fetchall()
-    connection.close()
     return entries
 
-
 # delete entry from the database using the entry ID
-def delete_entry(entry_id):
-    connection = connect()
+def delete_entry(connection, entry_id):
     cursor = connection.cursor()
     cursor.execute('DELETE FROM entries WHERE id = ?', (entry_id,))
     connection.commit()
-    connection.close()
-
 
 # delete all entries from the database
-def delete_all_entries():
-    connection = connect()
+def delete_all_entries(connection):
     cursor = connection.cursor()
     cursor.execute('DELETE FROM entries')
     connection.commit()
-    connection.close()
 
+# delete the database file
+def delete_database(db_name):
+    if os.path.exists(db_name):
+        confirmation = input(f"Are you sure you want to delete the database '{db_name}'? (yes/no): ")
+        if confirmation.lower() == 'yes':
+            os.remove(db_name)
+            print("Database deleted successfully!")
+        else:
+            print("Database deletion cancelled.")
+    else:
+        print("Database does not exist.")
+
+# Open or create the database file
+def open_or_create_database(db_name):
+    if not db_name.endswith('.key'):
+        print("Please ensure the database name ends with .key.")
+        return None
+    if not os.path.exists(db_name):
+        open(db_name, 'w').close()  # Create an empty file
+    return connect(db_name)
 
 # Helper function to display entries
 def display_entries(entries):
@@ -76,14 +81,3 @@ def select_entry_to_delete(entries):
     entry_index = int(input("Enter the number of the entry to delete: ")) - 1
     return entry_index
 
-# delete the database file
-def delete_database(db_name):
-    if os.path.exists(db_name):
-        confirmation = input(f"Are you sure you want to delete the database '{db_name}'? (yes/no): ")
-        if confirmation.lower() == 'yes':
-            os.remove(db_name)
-            print("Database deleted successfully!")
-        else:
-            print("Database deletion cancelled.")
-    else:
-        print("Database does not exist.")

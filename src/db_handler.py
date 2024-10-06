@@ -64,11 +64,11 @@ def get_entries(connection):
             encrypted_password = entries[i][3]
             decrypted_password = decrypt_password(encrypted_password)
             entries[i] = (
-                entries[i][0],  # ID
-                entries[i][1],  # Website
-                entries[i][2],  # Username
-                decrypted_password,  # Entschlüsseltes Passwort
-                encrypted_password  # Verschlüsseltes Passwort
+                entries[i][0], # ID
+                entries[i][1], # Website
+                entries[i][2], # Username
+                decrypted_password, # Entschlüsseltes Passwort
+                encrypted_password # Verschlüsseltes Passwort
             )
         return entries
     except sqlite3.Error as e:

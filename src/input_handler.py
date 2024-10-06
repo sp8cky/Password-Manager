@@ -1,4 +1,3 @@
-import getpass
 
 def get_user_choice():
     print("\nChoose an option:")
@@ -10,9 +9,9 @@ def get_user_choice():
     choice = input("Enter your choice (1-5): ")
     return choice
 
-    
+
 def get_input():
     website = input("Enter the name of the website: ")
     username = input("Enter your username: ")
-    password = getpass.getpass("Enter your password: ")
+    password = input("Enter your password: ")
     return website, username, password

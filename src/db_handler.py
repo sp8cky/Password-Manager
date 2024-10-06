@@ -1,4 +1,5 @@
 import sqlite3
+import os
 
 # create database connection
 def connect():
@@ -51,7 +52,7 @@ def delete_entry(entry_id):
     connection.commit()
     connection.close()
 
-    
+
 # delete all entries from the database
 def delete_all_entries():
     connection = connect()
@@ -59,3 +60,30 @@ def delete_all_entries():
     cursor.execute('DELETE FROM entries')
     connection.commit()
     connection.close()
+
+
+# Helper function to display entries
+def display_entries(entries):
+    print("\nStored entries (Website, Username, Password):")
+    for index, entry in enumerate(entries):
+        print(f"{index + 1}. {entry[1]}, {entry[2]}, {entry[3]}")
+
+# Helper function to select an entry to delete
+def select_entry_to_delete(entries):
+    print("\nSelect an entry to delete:")
+    for index, entry in enumerate(entries):
+        print(f"{index + 1}. Website: {entry[1]}")
+    entry_index = int(input("Enter the number of the entry to delete: ")) - 1
+    return entry_index
+
+# delete the database file
+def delete_database(db_name):
+    if os.path.exists(db_name):
+        confirmation = input(f"Are you sure you want to delete the database '{db_name}'? (yes/no): ")
+        if confirmation.lower() == 'yes':
+            os.remove(db_name)
+            print("Database deleted successfully!")
+        else:
+            print("Database deletion cancelled.")
+    else:
+        print("Database does not exist.")

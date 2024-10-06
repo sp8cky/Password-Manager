@@ -28,7 +28,7 @@ def main():
                 continue
             entry_index = select_entry_to_delete(entries)
             if 0 <= entry_index < len(entries):
-                delete_entry(connection, entries[entry_index][0])  # Using the entry ID for deletion
+                delete_entry(connection, entries[entry_index][0]) 
                 print("Entry deleted successfully!")
             else:
                 print("Invalid entry number.")
@@ -36,8 +36,12 @@ def main():
         elif choice == '4':  # Delete all entries
             delete_all_entries(connection)
             print("All entries deleted successfully!")
+        
+        elif choice == '9': # exit to database menu
+            print("Back to database menu.")
+            database_options()
             
-        elif choice == '5':
+        elif choice == '0': # exit
             print("Exiting the program.")
             break
             

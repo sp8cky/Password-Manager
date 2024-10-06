@@ -19,7 +19,17 @@ def create_table(connection):
     ''')
     connection.commit()
 
-# add new entry to the database
+# Open or create the database file
+def open_or_create_database(db_name):
+    if not db_name.endswith('.key'):
+        print("Please ensure the database name ends with .key.")
+        return None
+    if not os.path.exists(db_name):
+        open(db_name, 'w').close()  # Create an empty file
+    return connect(db_name)
+
+
+# add new entry
 def add_entry(connection, website, username, password):
     cursor = connection.cursor()
     cursor.execute(''' 
@@ -34,11 +44,27 @@ def get_entries(connection):
     entries = cursor.fetchall()
     return entries
 
+# Helper function to display entries
+def display_entries(entries):
+    print("\nStored entries (Website, Username, Password):")
+    for index, entry in enumerate(entries):
+        print(f"{index + 1}. {entry[1]}, {entry[2]}, {entry[3]}")
+
+
 # delete entry from the database using the entry ID
 def delete_entry(connection, entry_id):
     cursor = connection.cursor()
     cursor.execute('DELETE FROM entries WHERE id = ?', (entry_id,))
     connection.commit()
+
+# Helper function to select an entry to delete
+def select_entry_to_delete(entries):
+    print("\nSelect an entry to delete:")
+    for index, entry in enumerate(entries):
+        print(f"{index + 1}. Website: {entry[1]}")
+    entry_index = int(input("Enter the number of the entry to delete: ")) - 1
+    return entry_index
+
 
 # delete all entries from the database
 def delete_all_entries(connection):
@@ -58,26 +84,4 @@ def delete_database(db_name):
     else:
         print("Database does not exist.")
 
-# Open or create the database file
-def open_or_create_database(db_name):
-    if not db_name.endswith('.key'):
-        print("Please ensure the database name ends with .key.")
-        return None
-    if not os.path.exists(db_name):
-        open(db_name, 'w').close()  # Create an empty file
-    return connect(db_name)
-
-# Helper function to display entries
-def display_entries(entries):
-    print("\nStored entries (Website, Username, Password):")
-    for index, entry in enumerate(entries):
-        print(f"{index + 1}. {entry[1]}, {entry[2]}, {entry[3]}")
-
-# Helper function to select an entry to delete
-def select_entry_to_delete(entries):
-    print("\nSelect an entry to delete:")
-    for index, entry in enumerate(entries):
-        print(f"{index + 1}. Website: {entry[1]}")
-    entry_index = int(input("Enter the number of the entry to delete: ")) - 1
-    return entry_index
 

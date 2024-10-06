@@ -25,19 +25,18 @@ Python implementation of a console based password manager.
 
 ## Installation
 ### Installation Steps
-
+Clone the repository
 ```bash
-# Clone the repository
 git clone https://github.com/sp8cky/Password-Manager
-
-# Navigate into the directory
-cd your-project
-
-# Install dependencies
-pip install -r requirements.txt
-
 ```
-
+Navigate into the directory
+```bash
+cd your-project
+```
+Install dependencies
+```bash
+pip install -r requirements.txt
+```
 
 ## Contributing
 - Feedback and Contributions: It's my first cybersecurity project, Feedback and contributions are welcome! If you encounter any issues or have suggestions for improvements, feel free to open an issue or submit a pull request on GitHub.

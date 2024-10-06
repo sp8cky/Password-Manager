@@ -9,7 +9,7 @@ Python implementation of a console based password manager.
 4. [License](#license)
 5. [Credits](#credits)
 
-## Implemented functions
+## Implemented Features
 - Create a .key-database
 - Add entries (website, username, (pseudogenerated) password)
 - Delete an entry

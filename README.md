@@ -13,13 +13,16 @@ This is one of my first projects in cybersecurity that I developed to deepen my 
 ## Implemented Features
 - Database options: Create/open/delete a .key-database
 - Entry options: Add/delete one/delete all/view entries (website, username, password)
+- Generate a pseudogenerated password
+- En- and decrypt all passwords with fernet
 
 ### Project status
 - Still in progress
 
 ### Future implementations
-- password generation
-- encryption
+- master passwords
+- hashing
+- salting
 
 ## Installation
 ### Installation Steps

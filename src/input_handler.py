@@ -1,7 +1,7 @@
 from db_handler import open_database, create_database, delete_database
 
 def database_options():
-    print("\nWelcome to the Password Manager!")
+    print("Welcome to the Password Manager!")
     while True:
         print("\nDatabase Menu:")
         print("1. Open existing database")
@@ -15,14 +15,14 @@ def database_options():
             db_name = input("Enter the name of the existing database (with .key extension): ")
             connection = open_database(db_name)
             if connection:
-                print(f"Opened database: {db_name}")
+                print(f"\n>Opened database: {db_name}")
                 return connection 
         
         elif choice == '2':
             db_name = input("Enter the name for the new database (with .key extension): ")
             connection = create_database(db_name)
             if connection:
-                print(f"Created new database: {db_name}")
+                print(f"\n>Created new database: {db_name}")
                 return connection 
         
         elif choice == '3':

@@ -1,6 +1,6 @@
-from input_handler import get_user_choice, get_entry_input, database_options
-from db_handler import create_table, add_entry, get_entries, delete_entry, delete_all_entries, display_entries, select_entry_to_delete
-from encryption_handler import generate_password
+from input_handler import *
+from db_handler import *
+from encryption_handler import *
 import os
 
 def main():
@@ -19,31 +19,31 @@ def main():
         elif choice == '2':  # Add entry
             website, username, password = get_entry_input()
             add_entry(connection, website, username, password)
-            print("Entry added successfully!")
+            print("\n>Entry added successfully!")
 
         elif choice == '3':  # Delete entry
             entries = get_entries(connection)
             if not entries:
-                print("No entries to delete.")
+                print("\n>No entries to delete.")
                 continue
             entry_index = select_entry_to_delete(entries)
             if 0 <= entry_index < len(entries):
                 delete_entry(connection, entries[entry_index][0]) 
-                print("Entry deleted successfully!")
+                print("\n>Entry deleted successfully!")
             else:
-                print("Invalid entry number.")
+                print("\n>Invalid entry number.")
 
         elif choice == '4':  # Delete all entries
             delete_all_entries(connection)
-            print("All entries deleted successfully!")
+            print("\n>All entries deleted successfully!")
 
         elif choice == '5':  
             length = int(input("Enter the length of the password (minimum 8): "))
             if length < 8:
-                print("Password length should be at least 8.")
+                print("\n>Password length should be at least 8.")
                 continue
             generated_password = generate_password(length)
-            print(f"Generated password: {generated_password}")
+            print(f"\n>Generated password: {generated_password}")
         
         elif choice == '9': # exit to database menu
             print("Back to database menu.")
@@ -54,7 +54,15 @@ def main():
             exit()
             
         else:
-            print("Invalid choice. Please try again.")
+            print("\n>Invalid choice. Please try again.")
 
 if __name__ == "__main__":
     main()
+    # Beispiel zur manuellen Überprüfung
+    """key = Fernet.generate_key()
+    f = Fernet(key)
+    password = "mein_passwort"
+    encrypted_password = f.encrypt(password.encode())
+    decrypted_password = f.decrypt(encrypted_password).decode()
+    print(decrypted_password)  # sollte "mein_passwort" ausgeben"""
+    

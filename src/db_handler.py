@@ -3,21 +3,25 @@ import os
 
 # create database connection
 def connect(db_name):
-    connection = sqlite3.connect(db_name)
-    return connection
+    try:
+        connection = sqlite3.connect(db_name)
+        return connection
+    except sqlite3.Error as e:
+        print(f"Error connecting to database: {e}")
+        return None
 
 # create table (if not exists)
 def create_table(connection):
-    cursor = connection.cursor()
-    cursor.execute(''' 
-        CREATE TABLE IF NOT EXISTS entries (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            website TEXT NOT NULL,
-            username TEXT NOT NULL,
-            password TEXT NOT NULL
-        )
-    ''')
-    connection.commit()
+    with connection:
+        cursor = connection.cursor()
+        cursor.execute(''' 
+            CREATE TABLE IF NOT EXISTS entries (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                website TEXT NOT NULL,
+                username TEXT NOT NULL,
+                password TEXT NOT NULL
+            )
+        ''')
 
 # Open the existing database file
 def open_database(db_name):
@@ -39,18 +43,25 @@ def create_database(db_name):
 
 # add new entry
 def add_entry(connection, website, username, password):
-    cursor = connection.cursor()
-    cursor.execute(''' 
-        INSERT INTO entries (website, username, password) VALUES (?, ?, ?)
-    ''', (website, username, password))
-    connection.commit()
+    try:
+        with connection:
+            cursor = connection.cursor()
+            cursor.execute(''' 
+                INSERT INTO entries (website, username, password) VALUES (?, ?, ?)
+            ''', (website, username, password))
+    except sqlite3.Error as e:
+        print(f"Error adding entry: {e}")
 
 # get all entries from the database
 def get_entries(connection):
-    cursor = connection.cursor()
-    cursor.execute('SELECT * FROM entries')
-    entries = cursor.fetchall()
-    return entries
+    try:
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM entries')
+        entries = cursor.fetchall()
+        return entries
+    except sqlite3.Error as e:
+        print(f"Error retrieving entries: {e}")
+        return []
 
 # Helper function to display entries
 def display_entries(entries):
@@ -61,9 +72,12 @@ def display_entries(entries):
 
 # delete entry from the database using the entry ID
 def delete_entry(connection, entry_id):
-    cursor = connection.cursor()
-    cursor.execute('DELETE FROM entries WHERE id = ?', (entry_id,))
-    connection.commit()
+    try:
+        with connection:
+            cursor = connection.cursor()
+            cursor.execute('DELETE FROM entries WHERE id = ?', (entry_id,))
+    except sqlite3.Error as e:
+        print(f"Error deleting entry: {e}")
 
 
 # Helper function to select an entry to delete
@@ -77,9 +91,12 @@ def select_entry_to_delete(entries):
 
 # delete all entries from the database
 def delete_all_entries(connection):
-    cursor = connection.cursor()
-    cursor.execute('DELETE FROM entries')
-    connection.commit()
+    try:
+        with connection:
+            cursor = connection.cursor()
+            cursor.execute('DELETE FROM entries')
+    except sqlite3.Error as e:
+        print(f"Error deleting all entries: {e}")
     
 
 # delete the database file
@@ -87,8 +104,11 @@ def delete_database(db_name):
     if os.path.exists(db_name):
         confirmation = input(f"Are you sure you want to delete the database '{db_name}'? (yes/no): ")
         if confirmation.lower() == 'yes':
-            os.remove(db_name)
-            print("Database deleted successfully!")
+            try:
+                os.remove(db_name)
+                print("Database deleted successfully!")
+            except Exception as e:
+                print(f"Error deleting database: {e}")
         else:
             print("Database deletion cancelled.")
     else:

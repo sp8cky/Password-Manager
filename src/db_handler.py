@@ -19,14 +19,22 @@ def create_table(connection):
     ''')
     connection.commit()
 
-# Open or create the database file
-def open_or_create_database(db_name):
+# Open the existing database file
+def open_database(db_name):
+    if os.path.exists(db_name):
+        return connect(db_name)
+    else:
+        print("Database does not exist.")
+        return None
+
+# Create a new database file
+def create_database(db_name):
     if not db_name.endswith('.key'):
         print("Please ensure the database name ends with .key.")
         return None
-    if not os.path.exists(db_name):
-        open(db_name, 'w').close()  # Create an empty file
-    return connect(db_name)
+    connection = sqlite3.connect(db_name)
+    create_table(connection)
+    return connection
 
 
 # add new entry

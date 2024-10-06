@@ -1,4 +1,4 @@
-from input_handler import get_user_choice, get_input, database_options
+from input_handler import get_user_choice, get_entry_input, database_options
 from db_handler import create_table, add_entry, get_entries, delete_entry, delete_all_entries, display_entries, select_entry_to_delete
 import os
 
@@ -7,8 +7,7 @@ def main():
     while connection is None:
         connection = database_options()
     
-    create_table(connection)  # create table (if not exists)
-    
+    # interaction loop
     while True:
         choice = get_user_choice()
 
@@ -17,7 +16,7 @@ def main():
             display_entries(entries)
 
         elif choice == '2':  # Add entry
-            website, username, password = get_input()
+            website, username, password = get_entry_input()
             add_entry(connection, website, username, password)
             print("Entry added successfully!")
 
@@ -43,7 +42,7 @@ def main():
             
         elif choice == '0': # exit
             print("Exiting the program.")
-            break
+            exit()
             
         else:
             print("Invalid choice. Please try again.")

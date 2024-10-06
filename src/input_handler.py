@@ -1,4 +1,4 @@
-from db_handler import open_or_create_database, delete_database
+from db_handler import open_database, create_database, delete_database
 
 def get_user_choice():
     print("\nChoose an option:")
@@ -11,7 +11,7 @@ def get_user_choice():
     choice = input("Enter your choice: ")
     return choice
 
-def get_input():
+def get_entry_input():
     website = input("Enter the name of the website: ")
     username = input("Enter your username: ")
     password = input("Enter your password: ")
@@ -28,14 +28,14 @@ def database_options():
         
         if choice == '1':
             db_name = input("Enter the name of the existing database (with .key extension): ")
-            connection = open_or_create_database(db_name)
+            connection = open_database(db_name)
             if connection:
                 print(f"Opened database: {db_name}")
                 return connection 
         
         elif choice == '2':
             db_name = input("Enter the name for the new database (with .key extension): ")
-            connection = open_or_create_database(db_name)
+            connection = create_database(db_name)
             if connection:
                 print(f"Created new database: {db_name}")
                 return connection 
@@ -46,7 +46,7 @@ def database_options():
             
         elif choice == '0':
             print("Exiting the program.")
-            break
+            exit()
 
         else:
             print("Invalid choice. Please try again.")

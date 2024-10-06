@@ -1,5 +1,6 @@
 from input_handler import get_user_choice, get_entry_input, database_options
 from db_handler import create_table, add_entry, get_entries, delete_entry, delete_all_entries, display_entries, select_entry_to_delete
+from encryption_handler import generate_password
 import os
 
 def main():
@@ -35,6 +36,14 @@ def main():
         elif choice == '4':  # Delete all entries
             delete_all_entries(connection)
             print("All entries deleted successfully!")
+
+        elif choice == '5':  
+            length = int(input("Enter the length of the password (minimum 8): "))
+            if length < 8:
+                print("Password length should be at least 8.")
+                continue
+            generated_password = generate_password(length)
+            print(f"Generated password: {generated_password}")
         
         elif choice == '9': # exit to database menu
             print("Back to database menu.")

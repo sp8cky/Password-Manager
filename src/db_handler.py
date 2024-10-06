@@ -65,6 +65,7 @@ def delete_entry(connection, entry_id):
     cursor.execute('DELETE FROM entries WHERE id = ?', (entry_id,))
     connection.commit()
 
+
 # Helper function to select an entry to delete
 def select_entry_to_delete(entries):
     print("\nSelect an entry to delete:")
@@ -79,6 +80,7 @@ def delete_all_entries(connection):
     cursor = connection.cursor()
     cursor.execute('DELETE FROM entries')
     connection.commit()
+    
 
 # delete the database file
 def delete_database(db_name):

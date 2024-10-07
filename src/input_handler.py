@@ -1,4 +1,5 @@
 from db_handler import open_database, create_database, delete_database
+from encryption_handler import verify_master_password, set_master_password
 
 def database_options():
     print("Welcome to the Password Manager!")
@@ -15,13 +16,15 @@ def database_options():
             db_name = input("Enter the name of the existing database (with .key extension): ")
             connection = open_database(db_name)
             if connection:
-                print(f"\n>Opened database: {db_name}")
-                return connection 
+                if verify_master_password(connection):
+                    print(f"\n>Opened database: {db_name}")
+                    return connection
         
         elif choice == '2':
             db_name = input("Enter the name for the new database (with .key extension): ")
             connection = create_database(db_name)
             if connection:
+                set_master_password(connection)
                 print(f"\n>Created new database: {db_name}")
                 return connection 
         

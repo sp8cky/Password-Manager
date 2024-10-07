@@ -22,6 +22,13 @@ def create_table(connection):
                 password TEXT NOT NULL
             )
         ''')
+        cursor.execute(''' 
+            CREATE TABLE IF NOT EXISTS master (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                master_password TEXT NOT NULL
+            )
+        ''')
+
 
 # Open the existing database file
 def open_database(db_name):

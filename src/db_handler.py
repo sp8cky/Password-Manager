@@ -63,7 +63,7 @@ def get_entries(connection):
         for i in range(len(entries)): # decrypt the passwords before returning
             encrypted_password = entries[i][3]
             decrypted_password = decrypt_password(encrypted_password)
-            entries[i] = (
+            entries[i] = ( # TODO: remove the encrypted password from the tuple
                 entries[i][0], # ID
                 entries[i][1], # Website
                 entries[i][2], # Username

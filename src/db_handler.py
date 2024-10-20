@@ -1,6 +1,7 @@
 import os
-from encryption_handler import *
 from password_manager_class import PasswordManager
+from encryption_handler import *
+
 
 def open_database(db_name):
     if os.path.exists(db_name):
@@ -21,10 +22,14 @@ def create_database(db_name):
     return pm
 
 def delete_database(db_name):
+    pm = PasswordManager(db_name)
+    pm.connect()
     if os.path.exists(db_name):
         confirmation = input(f"Are you sure you want to delete the database '{db_name}'? (yes/no): ")
         if confirmation.lower() == 'yes':
             try:
+                if pm.connection: # close the connection if it is open
+                    pm.connection.close()
                 os.remove(db_name) 
                 print("\n>Database deleted successfully!")
             except Exception as e:

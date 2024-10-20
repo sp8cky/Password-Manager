@@ -1,5 +1,4 @@
-import sqlite3
-import os
+import sqlite3, os
 from encryption_handler import *
 
 class PasswordManager:

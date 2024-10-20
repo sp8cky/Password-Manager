@@ -2,7 +2,7 @@ import os
 from password_manager_class import PasswordManager
 from encryption_handler import *
 
-
+# opens an existing database
 def open_database(db_name):
     if os.path.exists(db_name):
         pm = PasswordManager(db_name)
@@ -12,6 +12,7 @@ def open_database(db_name):
         print("\n>Database does not exist.")
         return None
 
+# creates a new database with .key extension
 def create_database(db_name):
     if not db_name.endswith('.key'):
         print("\n>Please ensure the database name ends with .key.")
@@ -21,24 +22,31 @@ def create_database(db_name):
     pm.create_table()
     return pm
 
+# deletes an existing database
 def delete_database(db_name):
     pm = PasswordManager(db_name)
     pm.connect()
     if os.path.exists(db_name):
-        confirmation = input(f"Are you sure you want to delete the database '{db_name}'? (yes/no): ")
-        if confirmation.lower() == 'yes':
-            try:
-                if pm.connection: # close the connection if it is open
-                    pm.connection.close()
-                os.remove(db_name) 
-                print("\n>Database deleted successfully!")
-            except Exception as e:
-                print(f"\n>Error deleting database: {e}")
-        else:
-            print("\n>Database deletion cancelled.")
+        try:
+            if pm.connection: # close the connection if it is open
+                pm.connection.close()
+            os.remove(db_name) 
+            print("\n>Database deleted successfully!")
+
+            # delete the corresponding secret file
+            secret_file_name = f"secret-{db_name}"
+            if os.path.exists(secret_file_name):
+                os.remove(secret_file_name)
+                print(f"\n>Secret file '{secret_file_name}' deleted successfully!")
+            else:
+                print(f"\n>Secret file '{secret_file_name}' does not exist.")
+
+        except Exception as e:
+            print(f"\n>Error deleting database: {e}")
     else:
         print("\n>Database does not exist.")
 
+# displays the stored entries
 def display_entries(entries):
     print("\n>Stored entries (ID, Website, Username, Decrypted Password, Encrypted Password):")
     for index, entry in enumerate(entries):

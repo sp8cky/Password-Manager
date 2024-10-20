@@ -16,7 +16,7 @@ def database_options():
             pm = open_database(db_name)
             if pm and pm.verify_master_password():
                 print(f"\n>Opened database: {db_name}")
-                return pm  # Gebe das PasswordManager-Objekt zurück
+                return pm 
         
         elif choice == '2':  # create new database
             db_name = input("Enter the name for the new database (with .key extension): ")
@@ -25,13 +25,15 @@ def database_options():
                 generate_key(db_name) # generate key for the new database
                 pm.set_master_password() 
                 print(f"\n>Created new database: {db_name}")
-                return pm  # Gebe das PasswordManager-Objekt zurück
+                return pm 
         
         elif choice == '3':  # delete database
             db_name = input("Enter the name of the database to delete (with .key extension): ")
             confirm = input(f"Are you sure you want to delete the database '{db_name}'? (yes/no): ")
             if confirm.lower() == 'yes':
                 delete_database(db_name)
+            else:
+                print("\n>Database deletion cancelled.")
         
         elif choice == '0':  # exit
             print("Exiting the program.")

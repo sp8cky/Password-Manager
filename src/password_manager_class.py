@@ -31,6 +31,7 @@ class PasswordManager:
                 )
             ''')
 
+    ## add entry including webiste, username and password to the database
     def add_entry(self, website, username, password):
         try:
             encrypted_password = encrypt_password(password, self.db_name)  # encrypt the password
@@ -42,26 +43,28 @@ class PasswordManager:
         except sqlite3.Error as e:
             print(f"\n>Error adding entry: {e}")
 
+    # get all entries from the database
     def get_entries(self):
         try:
             cursor = self.connection.cursor()
             cursor.execute('SELECT * FROM entries')
             entries = cursor.fetchall()
-            for i in range(len(entries)):  # decrypt the passwords before returning
+            for i in range(len(entries)): # decrypt the passwords before returning
                 encrypted_password = entries[i][3]
                 decrypted_password = decrypt_password(encrypted_password, self.db_name)
                 entries[i] = (
-                    entries[i][0],  # ID
-                    entries[i][1],  # Website
-                    entries[i][2],  # Username
-                    decrypted_password,  # Decrypted password
-                    encrypted_password  # Encrypted password
+                    entries[i][0], # ID
+                    entries[i][1], # Website
+                    entries[i][2], # Username
+                    decrypted_password, # Decrypted password TODO: change
+                    encrypted_password # Encrypted password TODO: change
                 )
             return entries
         except sqlite3.Error as e:
             print(f"\n>Error retrieving entries: {e}")
             return []
 
+    # delete one entry by id from the database
     def delete_entry(self, entry_id):
         try:
             with self.connection:
@@ -70,6 +73,7 @@ class PasswordManager:
         except sqlite3.Error as e:
             print(f"\n>Error deleting entry: {e}")
 
+    # delete all entries from the database
     def delete_all_entries(self):
         try:
             with self.connection:
@@ -78,6 +82,7 @@ class PasswordManager:
         except sqlite3.Error as e:
             print(f"\n>Error deleting all entries: {e}")
 
+    # set the master password for a new database
     def set_master_password(self):
         while True:
             master_password = input("Set your master password: ")
@@ -92,7 +97,7 @@ class PasswordManager:
                 break
             else:
                 print("Passwords do not match. Try again.")
-
+    # verify with three attempts the master password before allowing access to the database
     def verify_master_password(self):
         cursor = self.connection.cursor()
         cursor.execute('SELECT master_password FROM master WHERE id = 1')

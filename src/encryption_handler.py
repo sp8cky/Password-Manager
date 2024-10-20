@@ -10,7 +10,7 @@ def generate_password(length):
 # generates a new Fernet key and saves it to a file named to the database name
 def generate_key(db_name):
     key = Fernet.generate_key()
-    key_filename = f"secret-{db_name}"  # create a key file based on the database name
+    key_filename = f"secret-{db_name}" # create a key file based on the database name
     with open(key_filename, "wb") as key_file:
         key_file.write(key)
     return key
@@ -18,9 +18,7 @@ def generate_key(db_name):
 # loads the secret key file from the current directory
 def load_key(db_name):
     key_filename = f"secret-{db_name}"
-    print(f"Loading key from: {key_filename}")  # Debugging-Ausgabe
     key = open(key_filename, "rb").read()  # Schlüssel laden
-    print(f"Loaded key: {key}")  # Debugging-Ausgabe
     return key
 
 # encrypts the password using the loaded key

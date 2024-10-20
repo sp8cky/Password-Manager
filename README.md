@@ -5,10 +5,13 @@ This is one of my first projects in cybersecurity that I developed to deepen my 
 
 1. [Implemented Features](#Implemented-Features)
 2. [Installation](#installation)
-3. [Contributing](#contributing)
-4. [License](#license)
-5. [Credits](#credits)
-6. [Disclaimer](#disclaimer)
+3. [Usage](#usage)
+4. [Database management](#database-management)
+5. [Project structure](#project-structure)
+6. [Contributing](#contributing)
+7. [License](#license)
+8. [Credits](#credits)
+9. [Disclaimer](#disclaimer)
 
 ## Implemented Features
 - Database options: Create/open/delete a .key-database
@@ -34,6 +37,26 @@ Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
+
+## Usage 
+1. **Create a new database:** At startup, you can create a new password database and set a master password.
+2. **Set a master password:** Once the database is created, you will be prompted to set a master password. This protects access to the database.
+3. **Manage entries:**
+  - After verifying the master password, you can add, view or delete entries.
+  - Adding a new entry:** You can save website names, usernames and passwords.
+  - **View entries:** All saved passwords can be listed.
+  - Password Generator:** PWM offers an option to create randomly generated passwords.
+
+## Database management
+PWM stores your passwords in an SQLite database, which is encrypted with a `.key` file. Each database is protected with an individual key. The key is generated automatically when you create a new database.
+- Delete database:** You can securely delete a database by selecting the "Delete Database" option in the main menu.
+- Key files:** Make sure that the `.key` file is stored securely. Without this file you will not be able to access your database.
+
+## Project structure
+- `password_manager.py`: Main script that executes the password manager.
+- `input_handler.py`: Contains functions for user input and menu control.
+- `db_handler.py`: Manages database operations (creating, opening, deleting entries).
+- `encryption_handler.py`: Encryption logic (encryption/decryption of passwords and master password management).
 
 ## Contributing
 Feedback and Contributions: It's my first cybersecurity project, Feedback and contributions are welcome! If you encounter any issues or have suggestions for improvements, feel free to open an issue or submit a pull request on GitHub.

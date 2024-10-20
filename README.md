@@ -18,13 +18,13 @@ This is one of my first projects in cybersecurity that I developed to deepen my 
 - Entry options: Add/delete one/delete all/view entries (website, username, password)
 - Generate a pseudogenerated password
 - En- and decrypt all passwords with fernet
+- En- and decrypt your files with master password
+- Hashing with bcrypt
 
 ### Project status
 - Still in progress
 
 ### Future implementations
-- master passwords
-- hashing
 - salting
 
 ## Installation

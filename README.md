@@ -42,15 +42,15 @@ pip install -r requirements.txt
 1. **Create a new database:** At startup, you can create a new password database and set a master password.
 2. **Set a master password:** Once the database is created, you will be prompted to set a master password. This protects access to the database.
 3. **Manage entries:**
-  - After verifying the master password, you can add, view or delete entries.
-  - Adding a new entry:** You can save website names, usernames and passwords.
-  - **View entries:** All saved passwords can be listed.
-  - Password Generator:** PWM offers an option to create randomly generated passwords.
+   - After verifying the master password, you can add, view or delete entries.
+   - **Adding a new entry:** You can save website names, usernames and passwords.
+   - **View entries:** All saved passwords can be listed.
+   - **Password Generator:** PWM offers an option to create randomly generated passwords.
 
 ## Database management
 PWM stores your passwords in an SQLite database, which is encrypted with a `.key` file. Each database is protected with an individual key. The key is generated automatically when you create a new database.
-- Delete database:** You can securely delete a database by selecting the "Delete Database" option in the main menu.
-- Key files:** Make sure that the `.key` file is stored securely. Without this file you will not be able to access your database.
+- **Delete database:** You can securely delete a database by selecting the "Delete Database" option in the main menu.
+- **Key files:** Make sure that the `.key` file is stored securely. Without this file you will not be able to access your database.
 
 ## Project structure
 - `password_manager.py`: Main script that executes the password manager.

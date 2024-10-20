@@ -18,7 +18,7 @@ def main():
 
         elif choice == '2': # add entry
             website, username, password = get_entry_input()
-            pm.add_entry(website, username, password)
+            add_entry(pm, website, username, password)
             print("\n>Entry added successfully!")
 
         elif choice == '3': # delete entry
@@ -28,13 +28,13 @@ def main():
                 continue
             entry_index = select_entry_to_delete(entries)
             if 0 <= entry_index < len(entries):
-                pm.delete_entry(entries[entry_index][0]) 
+                delete_entry(pm, entries[entry_index][0]) 
                 print("\n>Entry deleted successfully!")
             else:
                 print("\n>Invalid entry number.")
 
         elif choice == '4': # delete all entries
-            pm.delete_all_entries()
+            delete_all_entries(pm)
             print("\n>All entries deleted successfully!")
 
         elif choice == '5': # generate password

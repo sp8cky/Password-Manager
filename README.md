@@ -19,13 +19,12 @@ This is one of my first projects in cybersecurity that I developed to deepen my 
 - Generate a pseudogenerated password
 - En- and decrypt all passwords with fernet
 - En- and decrypt your files with master password
-- Hashing with bcrypt
+- Hashing and salting with bcrypt
 
 ### Project status
 - Still in progress
 
 ### Future implementations
-- salting
 
 ## Installation
 ### Installation Steps

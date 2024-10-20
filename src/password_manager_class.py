@@ -31,18 +31,6 @@ class PasswordManager:
                 )
             ''')
 
-    ## add entry including webiste, username and password to the database
-    def add_entry(self, website, username, password):
-        try:
-            encrypted_password = encrypt_password(password, self.db_name)  # encrypt the password
-            with self.connection:
-                cursor = self.connection.cursor()
-                cursor.execute(''' 
-                    INSERT INTO entries (website, username, password) VALUES (?, ?, ?)
-                ''', (website, username, encrypted_password))
-        except sqlite3.Error as e:
-            print(f"\n>Error adding entry: {e}")
-
     # get all entries from the database
     def get_entries(self):
         try:
@@ -64,24 +52,6 @@ class PasswordManager:
             print(f"\n>Error retrieving entries: {e}")
             return []
 
-    # delete one entry by id from the database
-    def delete_entry(self, entry_id):
-        try:
-            with self.connection:
-                cursor = self.connection.cursor()
-                cursor.execute('DELETE FROM entries WHERE id = ?', (entry_id,))
-        except sqlite3.Error as e:
-            print(f"\n>Error deleting entry: {e}")
-
-    # delete all entries from the database
-    def delete_all_entries(self):
-        try:
-            with self.connection:
-                cursor = self.connection.cursor()
-                cursor.execute('DELETE FROM entries')
-        except sqlite3.Error as e:
-            print(f"\n>Error deleting all entries: {e}")
-
     # set the master password for a new database
     def set_master_password(self):
         while True:
@@ -97,6 +67,7 @@ class PasswordManager:
                 break
             else:
                 print("Passwords do not match. Try again.")
+                
     # verify with three attempts the master password before allowing access to the database
     def verify_master_password(self):
         cursor = self.connection.cursor()

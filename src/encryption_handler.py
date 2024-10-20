@@ -8,28 +8,31 @@ def generate_password(length):
     return password
 
 # generates a new Fernet key and saves it to a file named to the database name
-def generate_key():
+def generate_key(db_name):
     key = Fernet.generate_key()
-    key_filename = "secret.key" 
+    key_filename = f"secret-{db_name}"  # create a key file based on the database name
     with open(key_filename, "wb") as key_file:
         key_file.write(key)
     return key
 
 # loads the secret key file from the current directory
-def load_key():
-    key_filename = "secret.key"
-    return open(key_filename, "rb").read()
+def load_key(db_name):
+    key_filename = f"secret-{db_name}"
+    print(f"Loading key from: {key_filename}")  # Debugging-Ausgabe
+    key = open(key_filename, "rb").read()  # Schlüssel laden
+    print(f"Loaded key: {key}")  # Debugging-Ausgabe
+    return key
 
 # encrypts the password using the loaded key
-def encrypt_password(password):
-    key = load_key()
+def encrypt_password(password, db_name):
+    key = load_key(db_name)
     f = Fernet(key)
     encrypted_password = f.encrypt(password.encode())
     return encrypted_password
 
 # decrypts the encrypted password using the loaded key
-def decrypt_password(encrypted_password):
-    key = load_key()
+def decrypt_password(encrypted_password, db_name):
+    key = load_key(db_name)
     f = Fernet(key)
     decrypted_password = f.decrypt(encrypted_password).decode()
     return decrypted_password
@@ -43,39 +46,3 @@ def hash_password(password):
 # check if the user input password matches the hashed password
 def check_password(hashed_password, user_input_password):
     return bcrypt.checkpw(user_input_password.encode(), hashed_password)
-
-# set the master password and store it in the database
-def set_master_password(connection):
-    while True:
-        master_password = input("Set your master password: ")
-        confirm_password = input("Confirm your master password: ")
-        
-        if master_password == confirm_password:
-            hashed_password = hash_password(master_password)
-            with connection:
-                cursor = connection.cursor()
-                cursor.execute('INSERT INTO master (master_password) VALUES (?)', (hashed_password,))
-            print("Master password set successfully!")
-            break
-        else:
-            print("Passwords do not match. Try again.")
-
-# verify the master password when the user tries to access the database, exit if too many (3) failed attempts
-def verify_master_password(connection):
-    cursor = connection.cursor()
-    cursor.execute('SELECT master_password FROM master WHERE id = 1')
-    stored_hashed_password = cursor.fetchone()[0]
-
-    attempts = 3
-    while attempts > 0:
-        user_password = input("Enter the master password: ")
-        
-        if check_password(stored_hashed_password, user_password):
-            print("Master password verified!")
-            return True
-        else:
-            attempts -= 1
-            print(f"Incorrect password. {attempts} attempts left.")
-    
-    print("Too many failed attempts. Exiting.")
-    exit()

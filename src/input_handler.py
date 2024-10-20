@@ -1,5 +1,4 @@
-from db_handler import open_database, create_database, delete_database
-from encryption_handler import verify_master_password, set_master_password
+from db_handler import *
 
 def database_options():
     print("Welcome to the Password Manager!")
@@ -12,30 +11,32 @@ def database_options():
 
         choice = input("Enter your choice: ")
         
-        if choice == '1':
-            db_name = input("Enter the name of the existing database (with .key extension): ")
-            connection = open_database(db_name)
-            if connection:
-                if verify_master_password(connection):
-                    print(f"\n>Opened database: {db_name}")
-                    return connection
+        if choice == '1':  # open existing database
+            db_name = input("Enter the name of the database to open (with .key extension): ")
+            pm = open_database(db_name)
+            if pm and pm.verify_master_password():
+                print(f"\n>Opened database: {db_name}")
+                return pm  # Gebe das PasswordManager-Objekt zurück
         
-        elif choice == '2':
+        elif choice == '2':  # create new database
             db_name = input("Enter the name for the new database (with .key extension): ")
-            connection = create_database(db_name)
-            if connection:
-                set_master_password(connection)
+            pm = create_database(db_name)
+            if pm:
+                generate_key(db_name) # generate key for the new database
+                pm.set_master_password() 
                 print(f"\n>Created new database: {db_name}")
-                return connection 
+                return pm  # Gebe das PasswordManager-Objekt zurück
         
-        elif choice == '3':
+        elif choice == '3':  # delete database
             db_name = input("Enter the name of the database to delete (with .key extension): ")
-            delete_database(db_name) 
-            
-        elif choice == '0':
+            confirm = input(f"Are you sure you want to delete the database '{db_name}'? (yes/no): ")
+            if confirm.lower() == 'yes':
+                delete_database(db_name)
+        
+        elif choice == '0':  # exit
             print("Exiting the program.")
             exit()
-
+        
         else:
             print("Invalid choice. Please try again.")
 
